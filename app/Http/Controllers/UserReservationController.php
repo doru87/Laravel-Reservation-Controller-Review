@@ -46,7 +46,7 @@ class UserReservationController extends Controller
         }
 
         $reservation = Cache::lock('reservations_office_' . $office->id, 10)->block(3, function () use ($data, $office) {
-            $numberOfDays = Carbon::parse($data['end_date'])->endOfDay()->diffInDays(Carbon::parse($data['start_date'])->startOfDay()) + 1;
+            $numberOfDays = round(Carbon::parse($data['end_date'])->endOfDay()->diffInDays(Carbon::parse($data['start_date'])->startOfDay()) + 1) * -1;
 
             if ($office->reservations()->activeBetween($data['start_date'], $data['end_date'])->exists()) {
                 throw ValidationException::withMessages(['office_id' => 'You cannot make a reservation during this time']);
