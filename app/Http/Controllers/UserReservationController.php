@@ -30,9 +30,9 @@ class UserReservationController extends Controller
         abort_unless(auth()->user()->tokenCan('reservations.make'), 403);
 
         $data = $request->validate([
-            'office_id' => 'required|integer|exists:offices,id',
-            'start_date' => 'required|date|after:today',
-            'end_date' => 'required|date|after:start_date',
+            'office_id' => ['required', 'integer', 'exists:offices,id'],
+            'start_date' => ['required', 'date', 'after:today'],
+            'end_date' => ['required', 'date', 'after:start_date'],
         ]);
 
         $office = Office::findOrFail($data['office_id']);
